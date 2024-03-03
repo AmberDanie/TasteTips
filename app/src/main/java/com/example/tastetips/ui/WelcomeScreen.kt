@@ -35,7 +35,7 @@ fun WelcomeScreen(
         horizontalAlignment = CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_logo),
+            painter = painterResource(id = R.drawable.ic_logo_vector),
             contentDescription = null,
             modifier = Modifier
                 .align(CenterHorizontally)

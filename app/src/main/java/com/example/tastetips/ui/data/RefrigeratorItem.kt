@@ -1,0 +1,11 @@
+package com.example.tastetips.ui.data
+
+import androidx.compose.ui.graphics.vector.ImageVector
+
+data class RefrigeratorItem(
+    val positionIcon: ImageVector,
+    val positionName: String,
+    val positionIndicator: Int
+)
+
+val refrigeratorItems: MutableList<RefrigeratorItem> = mutableListOf()

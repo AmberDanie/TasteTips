@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="@dimen/splashscreen_icon_size"
+        android:height="@dimen/splashscreen_icon_size"
+        android:gravity="center">
+        <bitmap android:layout_height="match_parent" android:src="@drawable/ic_logo_vector" />
+    </item>
+</selector>

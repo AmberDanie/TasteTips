@@ -19,9 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,14 +38,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.tastetips.R
+import com.example.tastetips.TasteTipsScreen
+import com.example.tastetips.ui.model.TasteTipsViewModel
 import com.example.tastetips.ui.theme.TasteTipsTheme
 
 private typealias Action = () -> Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(viewModel: TasteTipsViewModel
+fun AuthorizationScreen(navController: NavController,
+    viewModel: TasteTipsViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(modifier = Modifier
@@ -81,19 +86,9 @@ fun RegisterScreen(viewModel: TasteTipsViewModel
                 )
                 Spacer(modifier = Modifier.height(160.dp))
                 Button(
-                    onClick = { viewModel.updateRegisterSheet() },
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(start = 80.dp, end = 80.dp),
-                    shape = RectangleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.contrast_button)
-                    )
-                ) {
-                    Text(stringResource(R.string.register))
-                }
-                Button(
                     onClick = { viewModel.updateLoginSheet() },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(start = 80.dp, end = 80.dp),
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
@@ -102,15 +97,38 @@ fun RegisterScreen(viewModel: TasteTipsViewModel
                 ) {
                     Text(stringResource(R.string.login))
                 }
+                Button(
+                    onClick = { viewModel.updateRegisterSheet() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 80.dp, end = 80.dp),
+                    shape = RectangleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorResource(id = R.color.contrast_button)
+                    )
+                ) {
+                    Text(stringResource(R.string.register))
+                }
             }
         }
+
         val sheetState = rememberModalBottomSheetState()
 
         if (uiState.loginShellIsOpen) {
             AuthorizationModelBottomSheet(
                 textForTitle = R.string.login,
                 sheetState = sheetState,
-                onDismissClicked = { viewModel.updateLoginSheet()}
+                onDismissClicked = { viewModel.updateLoginSheet() },
+                onSubmitClicked = {
+                    navController.navigate(
+                        route = TasteTipsScreen.Refrigerator.name
+                    ) {
+                        popUpTo(TasteTipsScreen.Authorization.name) {
+                            inclusive = true
+                        }
+                    }
+                    viewModel.updateLoginSheet()
+                }
             )
         }
 
@@ -118,9 +136,21 @@ fun RegisterScreen(viewModel: TasteTipsViewModel
             AuthorizationModelBottomSheet(
                 textForTitle = R.string.register,
                 sheetState = sheetState,
-                onDismissClicked = { viewModel.updateRegisterSheet() })
+                onDismissClicked = { viewModel.updateRegisterSheet() },
+                onSubmitClicked = {
+                    navController.navigate(
+                        route = TasteTipsScreen.Refrigerator.name
+                    ) {
+                        popUpTo(
+                            TasteTipsScreen.Authorization.name
+                        ) {
+                            inclusive = true
+                        }
+                    }
+                    viewModel.updateRegisterSheet()
+                }
+            )
         }
-
     }
 }
 
@@ -129,7 +159,8 @@ fun RegisterScreen(viewModel: TasteTipsViewModel
 private fun AuthorizationModelBottomSheet(
     @StringRes textForTitle: Int,
     sheetState: SheetState,
-    onDismissClicked: Action
+    onDismissClicked: Action,
+    onSubmitClicked: Action
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -163,7 +194,7 @@ private fun AuthorizationModelBottomSheet(
                 modifier = Modifier.fillMaxWidth()
             )
             Button(
-                onClick = {},
+                onClick = onSubmitClicked,
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorResource(id = R.color.teal_700)
@@ -182,6 +213,6 @@ private fun AuthorizationModelBottomSheet(
 @Composable
 fun RegisterScreenPreview() {
     TasteTipsTheme {
-        RegisterScreen(viewModel())
+        AuthorizationScreen(rememberNavController(), viewModel())
     }
 }
