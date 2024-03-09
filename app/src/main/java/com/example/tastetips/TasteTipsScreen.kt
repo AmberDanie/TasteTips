@@ -2,6 +2,8 @@ package com.example.tastetips
 
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,14 +28,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tastetips.ui.AuthorizationScreen
 import com.example.tastetips.ui.FavoriteScreen
 import com.example.tastetips.ui.RecipesScreen
-import com.example.tastetips.ui.RefrigeratorScreen
 import com.example.tastetips.ui.SettingsScreen
 import com.example.tastetips.ui.model.TasteTipsViewModel
 import com.example.tastetips.ui.model.getNavigationItems
+import com.example.tastetips.ui.refrigerator.RefrigeratorScreen
 import com.example.tastetips.ui.theme.TasteTipsTheme
 
 enum class TasteTipsScreen(@StringRes val title: Int) {
-    Welcome(title = R.string.welcome),
     Authorization(title = R.string.authorization),
     Refrigerator(title = R.string.refrigerator),
     Recipes(title = R.string.recipes),
@@ -107,35 +108,30 @@ fun TasteTipsNavHost(navController: NavHostController,
                      modifier: Modifier) {
     NavHost(
         navController = navController,
-        startDestination = TasteTipsScreen.Authorization.title.toString(),
-        modifier = modifier
+        startDestination = TasteTipsScreen.Authorization.name,
+        modifier = modifier,
+        enterTransition = { fadeIn() },
+        exitTransition = { fadeOut() },
+        popEnterTransition = { fadeIn() },
+        popExitTransition = { fadeOut() }
     ) {
         composable(route = TasteTipsScreen.Authorization.name) {
             AuthorizationScreen(navController, viewModel)
         }
-        composable(route = TasteTipsScreen.Refrigerator.title.toString()) {
+        composable(route = TasteTipsScreen.Refrigerator.name) {
             RefrigeratorScreen(viewModel)
         }
-        composable(route = TasteTipsScreen.Recipes.title.toString()) {
+        composable(route = TasteTipsScreen.Recipes.name) {
             RecipesScreen(navController, viewModel)
         }
-        composable(route = TasteTipsScreen.Favorite.title.toString()) {
+        composable(route = TasteTipsScreen.Favorite.name) {
             FavoriteScreen(navController, viewModel)
         }
-        composable(route = TasteTipsScreen.Settings.title.toString()) {
+        composable(route = TasteTipsScreen.Settings.name) {
             SettingsScreen(navController, viewModel)
         }
     }
 }
-
-/*@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun WelcomePreview() {
-    TasteTipsTheme {
-        WelcomeScreen {
-        }
-    }
-}*/
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
