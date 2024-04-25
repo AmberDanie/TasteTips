@@ -8,4 +8,4 @@
 <img src="images/refrigerator_screen.jpg" width="30%"/>
 ## Добавление продукта в список
 Пользователь может самостоятельно добавлять и удалять позиции из списка
-![image](https://github.com/AmberDanie/TasteTips/assets/91751423/59a607f2-5dac-40a3-9aca-f7b175d25d19)
+<img src="images/Screenshot_11.jpg"/>
