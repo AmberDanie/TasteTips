@@ -8,4 +8,4 @@
 <img src="images/refrigerator_screen.jpg" width="30%"/>
 ## Добавление продукта в список
 Пользователь может самостоятельно добавлять и удалять позиции из списка
-<img src="images/Screenshot_11.jpg" width="50%"/>
+<img src="images/Screenshot_11.png"/>
