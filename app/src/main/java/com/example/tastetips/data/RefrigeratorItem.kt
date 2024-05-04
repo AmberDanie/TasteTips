@@ -1,4 +1,4 @@
-package com.example.tastetips.ui.data
+package com.example.tastetips.data
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

@@ -8,6 +8,7 @@
     <color name="teal_700">#387187</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray_container">#92B3E1D6</color>
     <color name="gray_bg">#F0F0F0</color>
     <color name="contrast_button">#0C2731</color>
 </resources>

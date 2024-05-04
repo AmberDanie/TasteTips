@@ -1,4 +1,4 @@
-package com.example.tastetips.ui.model
+package com.example.tastetips.model
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite

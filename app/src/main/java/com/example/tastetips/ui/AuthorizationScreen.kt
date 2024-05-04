@@ -42,7 +42,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tastetips.R
 import com.example.tastetips.TasteTipsScreen
-import com.example.tastetips.ui.model.TasteTipsViewModel
+import com.example.tastetips.model.TasteTipsViewModel
 import com.example.tastetips.ui.theme.TasteTipsTheme
 
 private typealias Action = () -> Unit
@@ -86,7 +86,9 @@ fun AuthorizationScreen(navController: NavController,
                 )
                 Spacer(modifier = Modifier.height(160.dp))
                 Button(
-                    onClick = { viewModel.updateLoginSheet() },
+                    onClick = {
+                        viewModel.updateLoginSheet()
+                              },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 80.dp, end = 80.dp),

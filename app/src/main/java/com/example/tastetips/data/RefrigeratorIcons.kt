@@ -1,4 +1,4 @@
-package com.example.tastetips.ui.data
+package com.example.tastetips.data
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BakeryDining

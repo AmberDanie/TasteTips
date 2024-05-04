@@ -1,4 +1,4 @@
-package com.example.tastetips.ui.model
+package com.example.tastetips.model
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -6,32 +6,46 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.tastetips.ui.data.RefrigeratorIcon
-import com.example.tastetips.ui.data.RefrigeratorItem
-import com.example.tastetips.ui.data.refrigeratorIcons
-import com.example.tastetips.ui.data.refrigeratorItems
-import kotlinx.coroutines.delay
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.tastetips.TasteTipsApplication
+import com.example.tastetips.data.RefrigeratorIcon
+import com.example.tastetips.data.RefrigeratorItem
+import com.example.tastetips.data.TasteTipsRepository
+import com.example.tastetips.data.refrigeratorIcons
+import com.example.tastetips.data.refrigeratorItems
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.IOException
 
-class TasteTipsViewModel: ViewModel() {
+sealed interface RecipesUiState {
+    data class Success(val data: RecipeData) : RecipesUiState
+    data object Error : RecipesUiState
+    data object Loading : RecipesUiState
+}
+
+class TasteTipsViewModel(private val tasteTipsRepository: TasteTipsRepository): ViewModel() {
     private val _uiState = MutableStateFlow(TasteTipsState())
     val uiState: StateFlow<TasteTipsState> = _uiState.asStateFlow()
 
-    var text by mutableStateOf("")
+    var recipesUiState: RecipesUiState by mutableStateOf(RecipesUiState.Loading)
+        private set
 
-    var date by mutableStateOf("")
+    var dialogName by mutableStateOf("")
 
-    private var currentIconIndex by mutableIntStateOf(0)
+    var dialogDate by mutableStateOf("")
+
+    private var dialogIconIndex by mutableIntStateOf(0)
 
     fun updateCurrentIcon(index: Int) {
-        refrigeratorIcons[currentIconIndex].isChosen = false
-        currentIconIndex = index
-        refrigeratorIcons[currentIconIndex].isChosen = true
+        refrigeratorIcons[dialogIconIndex].isChosen = false
+        dialogIconIndex = index
+        refrigeratorIcons[dialogIconIndex].isChosen = true
     }
 
     fun updateRegisterSheet() {
@@ -66,10 +80,10 @@ class TasteTipsViewModel: ViewModel() {
     ) {
         refrigeratorItems.add(
             RefrigeratorItem(
-                positionIcon = refrigeratorIcons[currentIconIndex].filledIcon,
-                positionName = text,
+                positionIcon = refrigeratorIcons[dialogIconIndex].filledIcon,
+                positionName = dialogName,
                 positionIndicator = 2,
-                positionExpirationDate = date
+                positionExpirationDate = dialogDate
             )
         )
         refrigeratorItemsList.swapList(refrigeratorItems)
@@ -88,11 +102,11 @@ class TasteTipsViewModel: ViewModel() {
     }
 
     fun updateDialogNameFieldText(newText: String) {
-        text = newText
+        dialogName = newText
     }
 
     fun updateDialogDatedFieldText(newDate: String) {
-        date = newDate
+        dialogDate = newDate
     }
 
     fun dialogConfirmation(
@@ -114,13 +128,35 @@ class TasteTipsViewModel: ViewModel() {
         updateDialogNameFieldText("")
     }
 
-    init {
+    private fun getFoodList() {
         viewModelScope.launch {
-            delay(1000)
+            recipesUiState = RecipesUiState.Loading
+            recipesUiState = try {
+                val result = tasteTipsRepository.getFoodList()
+                RecipesUiState.Success(
+                    result
+                )
+            } catch (e: IOException) {
+                RecipesUiState.Error
+            }
             _uiState.update { currentState ->
                 currentState.copy(
                     isLoading = false
                 )
+            }
+        }
+    }
+
+    init {
+        getFoodList()
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as TasteTipsApplication)
+                val tasteTipsRepository = application.container.tasteTipsRepository
+                TasteTipsViewModel(tasteTipsRepository = tasteTipsRepository)
             }
         }
     }

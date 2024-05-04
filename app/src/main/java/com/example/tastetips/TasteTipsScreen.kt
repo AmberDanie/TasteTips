@@ -29,8 +29,8 @@ import com.example.tastetips.ui.AuthorizationScreen
 import com.example.tastetips.ui.FavoriteScreen
 import com.example.tastetips.ui.RecipesScreen
 import com.example.tastetips.ui.SettingsScreen
-import com.example.tastetips.ui.model.TasteTipsViewModel
-import com.example.tastetips.ui.model.getNavigationItems
+import com.example.tastetips.model.TasteTipsViewModel
+import com.example.tastetips.model.getNavigationItems
 import com.example.tastetips.ui.refrigerator.RefrigeratorScreen
 import com.example.tastetips.ui.theme.TasteTipsTheme
 
@@ -44,7 +44,7 @@ enum class TasteTipsScreen(@StringRes val title: Int) {
 
 @Composable
 fun TasteTipsApp(
-    viewModel: TasteTipsViewModel = viewModel(),
+    viewModel: TasteTipsViewModel = viewModel(factory = TasteTipsViewModel.Factory),
     navController: NavHostController = rememberNavController()
 ) {
 
@@ -122,7 +122,7 @@ fun TasteTipsNavHost(navController: NavHostController,
             RefrigeratorScreen(viewModel)
         }
         composable(route = TasteTipsScreen.Recipes.name) {
-            RecipesScreen(navController, viewModel)
+            RecipesScreen(viewModel)
         }
         composable(route = TasteTipsScreen.Favorite.name) {
             FavoriteScreen(navController, viewModel)

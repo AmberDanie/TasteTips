@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.tastetips.R
 import com.example.tastetips.ui.ProductDateTransformation
-import com.example.tastetips.ui.data.RefrigeratorIcon
+import com.example.tastetips.data.RefrigeratorIcon
 import com.example.tastetips.ui.theme.textFieldFocusedColor
 import com.example.tastetips.ui.theme.textFieldUnfocusedColor
 

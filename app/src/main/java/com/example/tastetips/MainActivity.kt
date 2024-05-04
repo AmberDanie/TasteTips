@@ -6,12 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.example.tastetips.ui.model.TasteTipsViewModel
+import com.example.tastetips.model.TasteTipsViewModel
 import com.example.tastetips.ui.theme.TasteTipsTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: TasteTipsViewModel by viewModels()
+    private val viewModel: TasteTipsViewModel by viewModels(factoryProducer = { TasteTipsViewModel.Factory })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()

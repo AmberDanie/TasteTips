@@ -46,8 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tastetips.R
-import com.example.tastetips.ui.data.RefrigeratorItem
-import com.example.tastetips.ui.model.TasteTipsViewModel
+import com.example.tastetips.data.RefrigeratorItem
+import com.example.tastetips.model.TasteTipsViewModel
 import com.example.tastetips.ui.productDateToPattern
 import com.example.tastetips.ui.theme.TasteTipsTheme
 import java.util.Locale
@@ -63,13 +63,14 @@ fun RefrigeratorScreen(viewModel: TasteTipsViewModel) {
     Card(
         shape = RoundedCornerShape(
             topStart = 20.dp, topEnd = 20.dp),
-            modifier = Modifier.padding(40.dp)
+            modifier = Modifier.padding(20.dp)
     ) {
         Scaffold(
             topBar = { RefrigeratorTopBar() },
-            bottomBar = { RefrigeratorBottomBar{
-                viewModel.updateDialogState()
-            }
+            bottomBar = {
+                RefrigeratorBottomBar{
+                    viewModel.updateDialogState()
+                }
             },
             modifier = Modifier
                 .defaultMinSize(minHeight = 800.dp)
@@ -107,8 +108,8 @@ fun RefrigeratorScreen(viewModel: TasteTipsViewModel) {
                     }
                 }
             },
-            text = viewModel.text,
-            date = viewModel.date,
+            text = viewModel.dialogName,
+            date = viewModel.dialogDate,
             getIconsList = {viewModel.getRefrigeratorIcons(it)}
         )
     }
