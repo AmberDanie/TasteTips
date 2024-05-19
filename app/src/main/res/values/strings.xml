@@ -6,6 +6,7 @@
     <string name="register">Register</string>
     <string name="refrigerator">Refrigerator</string>
     <string name="recipes">Recipes</string>
+    <string name="recipe_info">RecipeInfo</string>
     <string name="favorite">Favorite</string>
     <string name="settings">Settings</string>
     <string name="track_inventory">Track Inventory</string>
