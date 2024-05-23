@@ -23,8 +23,10 @@ import pet.project.tastetips.data.MealModel
 import pet.project.tastetips.data.RecipeData
 import pet.project.tastetips.data.RefrigeratorIcon
 import pet.project.tastetips.data.RefrigeratorItem
+import pet.project.tastetips.data.SignInResult
 import pet.project.tastetips.data.TasteTipsState
 import pet.project.tastetips.data.refrigeratorIcons
+import pet.project.tastetips.data.states.SignInState
 import pet.project.tastetips.network.TasteTipsRepository
 import java.io.IOException
 
@@ -42,10 +44,28 @@ class TasteTipsViewModel(private val tasteTipsRepository: TasteTipsRepository): 
     )
     val uiState: StateFlow<TasteTipsState> = _uiState.asStateFlow()
 
+    private val _signInState = MutableStateFlow(SignInState())
+    val signInState: StateFlow<SignInState> = _signInState.asStateFlow()
+
     var networkState: NetworkState by mutableStateOf(NetworkState.Loading)
         private set
 
     private var dialogIconIndex by mutableIntStateOf(0)
+
+    fun onSignInResult(result: SignInResult) {
+        _signInState.update {
+            it.copy(
+                isSignInSuccessful = result.data != null,
+                signInError = result.errorMessage
+            )
+        }
+    }
+
+    fun resetSignInState() {
+        _signInState.update {
+            SignInState()
+        }
+    }
 
     fun updateCurrentIcon(index: Int) {
         refrigeratorIcons[dialogIconIndex].isChosen = false

@@ -3,18 +3,23 @@ package pet.project.tastetips.ui.screens
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -34,23 +39,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import pet.project.tastetips.NavGraph
 import pet.project.tastetips.R
 import pet.project.tastetips.model.TasteTipsViewModel
-import pet.project.tastetips.ui.theme.TasteTipsTheme
 
 private typealias Action = () -> Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthorizationScreen(navController: NavController,
-    viewModel: TasteTipsViewModel
+fun AuthorizationScreen(
+    navController: NavController,
+    viewModel: TasteTipsViewModel,
+    onSignInClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(modifier = Modifier
@@ -85,31 +88,56 @@ fun AuthorizationScreen(navController: NavController,
                     fontFamily = FontFamily.SansSerif
                 )
                 Spacer(modifier = Modifier.height(160.dp))
-                Button(
+                Surface(
                     onClick = {
-                        viewModel.updateLoginSheet()
-                              },
+                        navController.navigate(
+                            route = NavGraph.Refrigerator.name
+                        ) {
+                            popUpTo(
+                                NavGraph.Authorization.name
+                            ) {
+                                inclusive = true
+                            }
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 80.dp, end = 80.dp),
                     shape = RectangleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.contrast_button)
-                    )
+                    color = colorResource(id = R.color.contrast_button)
                 ) {
-                    Text(stringResource(R.string.login))
+                    Row(
+                        modifier = Modifier.padding(start = 12.dp, end = 16.dp,
+                            top = 12.dp, bottom = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text("Sign up as Guest",
+                            color = Color.White)
+                    }
                 }
-                Button(
-                    onClick = { viewModel.updateRegisterSheet() },
+                Spacer(Modifier.height(8.dp))
+                Surface(
+                    onClick = { onSignInClick() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 80.dp, end = 80.dp),
-                    shape = RectangleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.contrast_button)
-                    )
+                    shape = RectangleShape
                 ) {
-                    Text(stringResource(R.string.register))
+                    Row(
+                        modifier = Modifier.padding(start = 12.dp, end = 16.dp,
+                            top = 12.dp, bottom = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_google_logo),
+                            contentDescription = null,
+                            tint = Color.Unspecified
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text("Sign up with Google")
+                    }
                 }
             }
         }
@@ -208,13 +236,5 @@ private fun AuthorizationModelBottomSheet(
                 Text(text = stringResource(R.string.submit), fontSize = 18.sp)
             }
         }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun RegisterScreenPreview() {
-    TasteTipsTheme {
-        AuthorizationScreen(rememberNavController(), viewModel())
     }
 }
