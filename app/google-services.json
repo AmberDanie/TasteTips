@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "761128011519",
+    "project_id": "tastetips-50f92",
+    "storage_bucket": "tastetips-50f92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:761128011519:android:6f1e9cce63da4e4d3daeca",
+        "android_client_info": {
+          "package_name": "pet.project.tastetips"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "761128011519-17kkcab8t2j8doprisaqhbkenq53ht8s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pet.project.tastetips",
+            "certificate_hash": "b0b9644d917924421a57e04f76f39f1392b844f6"
+          }
+        },
+        {
+          "client_id": "761128011519-dekmjs2edlkuu6gfgrvrk5j9ascmts31.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5KRRT7bom-eJEVm5uZwUaqPy95I7IeD0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "761128011519-dekmjs2edlkuu6gfgrvrk5j9ascmts31.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
