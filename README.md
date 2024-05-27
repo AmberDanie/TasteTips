@@ -6,14 +6,27 @@
 
 На главном экране приложения находятся кнопки Login и Register для авторизации и регистрации соответственно.  
 
-<img src="images/login_screen.jpg" width="30%"/>  
+<img src="images/login_screen.jpg" width="90%"/>  
 
 ## Отображаемый список продуктов  
 
-<img src="images/refrigerator_screen.jpg" width="30%"/>  
+<img src="images/refrigerator_screen.jpg" width="90%"/>  
 
 ## Добавление продукта в список  
 
 Пользователь может самостоятельно добавлять и удалять позиции из списка  
 
-<img src="images/Screenshot_11.png"/>  
+<img src="images/Screenshot_11.png" width = "90%"/>  
+
+## Экран с рецептами
+<img src="images/recipes_1.jpg" width="90%"/>
+
+
+## Информация о рецепте  
+
+
+<div style="display: flex; width: 100%">
+  <img src="images/recipes_2.jpg" width="30%"/>  
+  <img src="images/recipes_3.jpg" width="30%"/>
+  <img src="images/recipes_4.jpg" width="30%"/>
+</div>
