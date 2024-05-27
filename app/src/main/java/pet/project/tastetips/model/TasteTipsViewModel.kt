@@ -24,9 +24,9 @@ import pet.project.tastetips.data.RecipeData
 import pet.project.tastetips.data.RefrigeratorIcon
 import pet.project.tastetips.data.RefrigeratorItem
 import pet.project.tastetips.data.SignInResult
-import pet.project.tastetips.data.TasteTipsState
 import pet.project.tastetips.data.refrigeratorIcons
 import pet.project.tastetips.data.states.SignInState
+import pet.project.tastetips.data.states.TasteTipsState
 import pet.project.tastetips.network.TasteTipsRepository
 import java.io.IOException
 
@@ -38,9 +38,14 @@ sealed interface NetworkState {
 
 data class RefrigeratorState(val itemList: List<RefrigeratorItem> = listOf())
 
+data class DishesState(val dishesList: List<MealModel> = listOf())
+
 class TasteTipsViewModel(private val tasteTipsRepository: TasteTipsRepository): ViewModel() {
-    private val _uiState = MutableStateFlow(TasteTipsState(
-        refrigeratorItems = getRefrigeratorItems())
+    private val _uiState = MutableStateFlow(
+        TasteTipsState(
+        refrigeratorItems = getRefrigeratorItems(),
+            favouriteDishes = getFavouriteDishes()
+        )
     )
     val uiState: StateFlow<TasteTipsState> = _uiState.asStateFlow()
 
@@ -103,21 +108,45 @@ class TasteTipsViewModel(private val tasteTipsRepository: TasteTipsRepository): 
     }
 
     fun getRefrigeratorItems(): StateFlow<RefrigeratorState> {
-        return tasteTipsRepository.getAllRefrigeratorItemsStream().map{RefrigeratorState(it)}.stateIn(
+        return tasteTipsRepository.getAllRefrigeratorItemsStream().map{
+            RefrigeratorState(it)
+        }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(),
             RefrigeratorState()
         )
     }
 
+    fun getFavouriteDishes() : StateFlow<DishesState> {
+        return tasteTipsRepository.getAllFavouriteDishes().map {
+            DishesState(it)
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(),
+            DishesState()
+        )
+    }
+
     private suspend fun addRefrigeratorItem(
         refrigeratorItem: RefrigeratorItem
     ) {
-        tasteTipsRepository.insert(refrigeratorItem)
+        tasteTipsRepository.insertRefrigeratorItem(refrigeratorItem)
+    }
+
+    private suspend fun addFavouriteDish(
+        favouriteDish: MealModel
+    ) {
+        tasteTipsRepository.insertFavouriteDish(favouriteDish)
     }
 
     suspend fun removeRefrigeratorItem(refrigeratorItem: RefrigeratorItem) {
-        tasteTipsRepository.delete(refrigeratorItem)
+        tasteTipsRepository.deleteRefrigeratorItem(refrigeratorItem)
+    }
+
+    suspend fun removeFavouriteDish(
+        favouriteDish: MealModel
+    ) {
+        tasteTipsRepository.deleteFavouriteDish(favouriteDish)
     }
 
     fun getRefrigeratorIcons(
@@ -149,6 +178,12 @@ class TasteTipsViewModel(private val tasteTipsRepository: TasteTipsRepository): 
             positionExpirationDate = _uiState.value.dialogDate)
         viewModelScope.launch {
             addRefrigeratorItem(refrigeratorItem)
+        }
+    }
+
+    fun onLikeClick(position: MealModel) {
+        viewModelScope.launch {
+            addFavouriteDish(position)
         }
     }
 

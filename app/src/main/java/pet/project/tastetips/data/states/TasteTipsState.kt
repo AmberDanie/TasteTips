@@ -1,9 +1,12 @@
-package pet.project.tastetips.data
+package pet.project.tastetips.data.states
 
 import kotlinx.coroutines.flow.StateFlow
+import pet.project.tastetips.data.MealModel
+import pet.project.tastetips.model.DishesState
 import pet.project.tastetips.model.RefrigeratorState
 
 data class TasteTipsState(
+    val userName: String = "Guest",
     val loginShellIsOpen: Boolean = false,
     val registerShellIsOpen: Boolean = false,
     val isLoading: Boolean = true,
@@ -14,5 +17,6 @@ data class TasteTipsState(
     val dialogDate: String = "",
     val dialogIconIndex: Int = 0,
     val currentScreenIndex: Int = 0,
-    val refrigeratorItems: StateFlow<RefrigeratorState>
+    val refrigeratorItems: StateFlow<RefrigeratorState>,
+    val favouriteDishes: StateFlow<DishesState>
 )
