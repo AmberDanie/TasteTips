@@ -44,7 +44,8 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    private val viewModel: TasteTipsViewModel by viewModels(factoryProducer = { TasteTipsViewModel.Factory })
+    private val viewModel: TasteTipsViewModel
+        by viewModels(factoryProducer = { TasteTipsViewModel.Factory })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()

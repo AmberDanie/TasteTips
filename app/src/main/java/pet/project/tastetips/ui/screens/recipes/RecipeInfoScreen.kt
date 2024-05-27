@@ -57,6 +57,7 @@ import pet.project.tastetips.data.NutritionData
 import pet.project.tastetips.data.SectionsModel
 import pet.project.tastetips.data.TagsData
 import pet.project.tastetips.model.TasteTipsViewModel
+import pet.project.tastetips.ui.screens.UriImage
 import pet.project.tastetips.ui.theme.applianceColor
 import pet.project.tastetips.ui.theme.defaultColor
 import pet.project.tastetips.ui.theme.difficultyColor

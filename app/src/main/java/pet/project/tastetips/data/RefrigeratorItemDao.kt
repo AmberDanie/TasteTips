@@ -9,12 +9,23 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RefrigeratorItemDao {
+    // For refrigerator items
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(item: RefrigeratorItem)
+    suspend fun insertRefrigeratorItem(item: RefrigeratorItem)
     @Delete
-    suspend fun delete(item: RefrigeratorItem)
+    suspend fun deleteRefrigeratorItem(item: RefrigeratorItem)
     @Query("SELECT * FROM refrigeratorItems WHERE id = :id")
-    fun getItem(id: Int) : Flow<RefrigeratorItem>
+    fun getRefrigeratorItem(id: Int) : Flow<RefrigeratorItem>
     @Query("SELECT * FROM refrigeratorItems")
-    fun getAllItems() : Flow<List<RefrigeratorItem>>
+    fun getAllRefrigeratorItems() : Flow<List<RefrigeratorItem>>
+
+    // For favourite dishes
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertFavouriteDish(item: MealModel)
+    @Delete
+    suspend fun deleteFavouriteDish(item: MealModel)
+    @Query("SELECT * FROM mealModel WHERE mealId = :id")
+    fun getFavouriteDish(id: Int) : Flow<MealModel>
+    @Query("SELECT * FROM mealModel")
+    fun getAllFavouriteDishes() : Flow<List<MealModel>>
 }
